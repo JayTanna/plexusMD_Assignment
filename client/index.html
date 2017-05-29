@@ -1,0 +1,103 @@
+<html>
+<head>
+	<title>PlexusMD</title>
+	<style type="text/css">
+		#headDiv
+		{
+			background-color: #787878;
+		}
+		#first,#second,#third 
+		{
+			background-color: #D3D3D3;
+			height: 200px;
+			border: 3px solid;
+		}
+
+		
+
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	
+</head>
+<body>
+    <div class="jumbotron text-center" id="headDiv">
+  		<h1>PlexusMD Assignment</h1>
+  	</div>
+
+    <div class="container">
+  		<div class="row">
+    		<div class="col-sm-4" id="first">
+    			
+      			<h3>Technology Stack</h3>
+      			<ul>
+      				<li>loopBack For ReST API</li>
+      				<li>Google map API for latitude and longitude </li>
+      				<li>moment.js for time of perticular city </li>
+      				<li>AJAX to call ReST API on Frontend </li>
+      				<li>Bootstrap for making Web page all device friendly</li> 
+      			</ul>
+    		</div>
+    		<div class="col-sm-4" id="second">
+	        	
+	        	<h3>Enter City Name</h3>
+	        	<input type="text" id="text1">
+	        	<input type="submit" id="btn1">
+
+    		</div>
+    		<div class="col-sm-4" id="third">
+    		
+      			<h3>Information Window</h3>        
+      			<p id="time"></p>
+      			<p id="latitude"></p>
+      			<p id="longitude"></p>
+    		</div>
+  		</div>
+	</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+	
+    $(document).ready(function () {
+    	$("#btn1").click(function(e){
+    		var cityname = document.getElementById('text1').value;
+    		if (cityname == "") {
+    			alert('Please Enter City Name');
+    		}
+    		else
+    		{	
+	    		var url = 'http://localhost:3000/api/plexusMD_models/cityInfo?inputCityName='+cityname;
+		        $.ajax({
+		            type: 'GET',
+		            url: url,
+					crossDomain: true,
+		            success: function (msg) {
+						console.log(JSON.stringify(msg));
+
+						var time = msg.cityInfo.time;
+						var lat = msg.cityInfo.location.lat;
+						var lng = msg.cityInfo.location.lng;
+
+						document.getElementById('time').innerHTML = "Current Time in City: "+time;
+						document.getElementById('latitude').innerHTML = "latitude of City: "+lat;
+						document.getElementById('longitude').innerHTML = "longitude of City: "+lng; 
+
+
+
+						console.log(time+" "+lat+" "+lng);
+
+		            },
+		            error: function (request, status, error) {
+
+		                alert(error);
+		            }
+		        });
+		    }    
+	    });    
+    });
+
+</script>
+</html>
